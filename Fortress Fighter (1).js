@@ -3,7 +3,7 @@ First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
 
 @title: Fortress Fighter
-@description: A very basic RPG-ish game.
+@description: A basic defense game.
 @author: Codingfreak234
 @tags: ['RPG', 'Castle']
 @addedOn: 2025-00-00
@@ -23,6 +23,21 @@ const blast4 = "4"
 const castle = "c"
 const marker = "m"
 const walkway = "w"
+const black = "l"
+
+const levels = [map`
+llllllllll
+wbbbbbbbbw
+wbbbbbbbbw
+wbbbbbbbbw
+wbbbbbbbbw
+wbbbbbbbbw
+wbbbbbbbbw
+wbbbbbbbbw
+wbbbbbbbbw
+wbbbbbbbbw
+bbbbbbbbbb
+llllllllll`]
 
 
 setLegend(
@@ -98,8 +113,24 @@ LL111113311111LL
 ...LL111111LL...
 ....LLLLLLLL....` ],
   [
-    enemy,
-    bitmap`
+    black, bitmap`
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000`],
+  [enemy, bitmap`
 3.....3.33.33..3
 33.3.33.3.3..333
 .333.3..3.3.33..
@@ -292,17 +323,6 @@ let score= 0
 let direction = 1
 
 
-const levels = [map`
-wbbbbbbbbw
-wbbbbbbbbw
-wbbbbbbbbw
-wbbbbbbbbw
-wbbbbbbbbw
-wbbbbbbbbw
-wbbbbbbbbw
-wbbbbbbbbw
-wbbbbbbbbw
-bbbbbbbbbb`]
 
 const currentLevel = levels[level]
 setMap(currentLevel)
@@ -311,28 +331,33 @@ setMap(currentLevel)
 var gameRunning = true
 
 addText("Health: 10", {
-  x: 1,
-  y: 1,
+  x: 0,
+  y: 0,
   color: color `2`
 });
+ addText("Score: 0", {
+  x: 11,
+  y: 0,
+  color: color`2`
+});
 
-addSprite(8, 9, marker)
-addSprite(8, 9, player1)
-addSprite(0,9,castle)
-addSprite(1,9,castle)
-addSprite(2,9,castle)
-addSprite(3,9,castle)
-addSprite(4,9,castle)
-addSprite(5,9,castle)
-addSprite(6,9,castle)
-addSprite(7,9,castle)
-addSprite(8,9,castle)
-addSprite(9,9,castle)
+addSprite(8, 10, marker)
+addSprite(8, 10, player1)
+addSprite(0,10,castle)
+addSprite(1,10,castle)
+addSprite(2,10,castle)
+addSprite(3,10,castle)
+addSprite(4,10,castle)
+addSprite(5,10,castle)
+addSprite(6,10,castle)
+addSprite(7,10,castle)
+addSprite(8,10,castle)
+addSprite(9,10,castle)
 
 onInput("w", () => {
     if (gameRunning === true) {
     if (direction === 1){
-      if (getFirst(marker).y > 0) {
+      if (getFirst(marker).y > 1) {
   getFirst(marker).y-=1
   }
 }
@@ -372,7 +397,7 @@ onInput("d", () => {
 onInput("w", () => {
   if (gameRunning === true) {
     if (direction === 1){
-      if (getFirst(player1).y > 0) {
+      if (getFirst(player1).y > 1) {
   getFirst(player1).y-=1
          direction = 1
       }
@@ -641,7 +666,7 @@ function moveEnemy() {
   if(score < 500){
   if(onOff === 0){
   for (let i = 0; i < enemies.length; i++) {
-    if(enemies[i].y < 9) {
+    if(enemies[i].y < 10) {
     enemies[i].y +=1
     } else { 
       if(enemies[i].x < 5) {
@@ -654,7 +679,7 @@ function moveEnemy() {
     }
   }else{
    for (let i = 0; i < enemies.length; i++) {
-    if(enemies[i].y < 9) {
+    if(enemies[i].y < 10) {
     enemies[i].y +=1
     } else { 
       if(enemies[i].x < 5) {
@@ -675,8 +700,8 @@ function checkHit() {
     let x = playerNumbers[direction].x
     let y = playerNumbers[direction].y
     addText("Health: " + health + " ", {
-  x: 1,
-  y: 1,
+  x: 0,
+  y: 0,
   color: color`2`
 });
   }
@@ -725,8 +750,8 @@ for (let e of enemies) {
   c.remove()
   health = health -1
       addText("Health: " + health + " ", {
-  x: 1,
-  y: 1,
+  x: 0,
+  y: 0,
   color: color`2`
 });
   }
@@ -746,21 +771,21 @@ var gameLoop = setInterval(() => {
   spawnEnemy()
   score += 1
       addText("Score: " + score, {
-  x: 1,
-  y: 2,
+  x: 11,
+  y: 0,
   color: color`2`
 });
   if(health < 1) {
     clearInterval(gameLoop)
    gameRunning = false
     addText("Health: 0  ", {
-  x: 1,
-  y: 1,
+  x: 0,
+  y: 0,
   color: color`2`
 });
 addText("Game over", {
-  x: 1,
-  y: 3,
+  x: 5,
+  y: 15,
   color: color`2`
 });
   }
